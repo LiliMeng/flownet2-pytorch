@@ -359,10 +359,10 @@ if __name__ == '__main__':
         average_accuracy = average_accuracy/float(batch_idx + 1)
         print('\033[91m' +"average accuracy    "+str(average_accuracy)+ '\033[0m') 
         if is_validate:   
-            with open("validation_acc.txt", "w") as text_file:
+            with open("validation_acc.txt", "a") as text_file:
                     print(f"validation average_accuracy: {str(average_accuracy)}", file=text_file)
         else:
-            with open("train_acc.txt", "w") as text_file1:
+            with open("train_acc.txt", "a") as text_file1:
                     print(f"train average_accuracy: {str(average_accuracy)}", file=text_file1)
 
         return total_loss / float(batch_idx + 1), (batch_idx + 1)
