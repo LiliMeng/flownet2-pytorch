@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--start_epoch', type=int, default=1)
     parser.add_argument('--total_epochs', type=int, default=10000)
-    parser.add_argument('--batch_size', '-b', type=int, default=8, help="Batch size")
+    parser.add_argument('--batch_size', '-b', type=int, default=32, help="Batch size")
     parser.add_argument('--train_n_batches', type=int, default = -1, help='Number of min-batches per epoch. If < 0, it will be determined by training_dataloader')
     parser.add_argument('--crop_size', type=int, nargs='+', default = [256, 256], help="Spatial dimension to crop training samples for training")
     parser.add_argument('--gradient_clip', type=float, default=None)
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     parser.add_argument('--name', default='run', type=str, help='a name to append to the save directory')
     parser.add_argument('--save', '-s', default='./work', type=str, help='directory for saving')
 
-    parser.add_argument('--validation_frequency', type=int, default=5, help='validate every n epochs')
+    parser.add_argument('--validation_frequency', type=int, default=1, help='validate every n epochs')
     parser.add_argument('--validation_n_batches', type=int, default=-1)
     parser.add_argument('--render_validation', action='store_true', help='run inference (save flows to file) and every validation_frequency epoch')
 
@@ -357,7 +357,14 @@ if __name__ == '__main__':
         progress.close()
 
         average_accuracy = average_accuracy/float(batch_idx + 1)
-        print('\033[91m' +"average accuracy    "+str(average_accuracy)+ '\033[0m')    
+        print('\033[91m' +"average accuracy    "+str(average_accuracy)+ '\033[0m') 
+        if is_validate:   
+            with open("validation_acc.txt", "w") as text_file:
+                    print(f"validation average_accuracy: {str(average_accuracy)}", file=text_file)
+        else:
+            with open("train_acc.txt", "w") as text_file1:
+                    print(f"train average_accuracy: {str(average_accuracy)}", file=text_file1)
+
         return total_loss / float(batch_idx + 1), (batch_idx + 1)
 
     # Reusable function for inference
